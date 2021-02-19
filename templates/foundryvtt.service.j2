@@ -1,0 +1,14 @@
+[Unit]
+Description=Foundry VTT
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /srv/foundryVTT/foundryvtt/resources/app/main.js --dataPath=/srv/foundryVTT/foundrydata
+WorkingDirectory=/home/foundry
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=foundry
+
+[Install]
+WantedBy=multi-user.target

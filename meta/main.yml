@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: setenv_apt-proxy
+  - role: service_nodejs
+  - role: service_samba

@@ -1,0 +1,35 @@
+---
+- name: Create foundryVTT Group
+  group:
+    name: "foundry"
+    gid: "1180"
+    state: present
+  become: yes
+
+- name: Create foundryVTT User
+  user:
+    name: "foundry"
+    comment: "FoundryVTT User"
+    group: "foundry"
+    # groups: "{{ kubeadm.os_user.groups }}"
+    uid: "1180"
+    shell: "/bin/bash"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+    ssh_key_comment: "foundry@{{ inventory_hostname }}"
+    state: present
+  become: yes
+
+- name: Create /srv/foundry directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "foundry"
+    group: "foundry"
+    mode: 0755
+  become: yes
+  with_items:
+   - '/srv/foundryVTT'
+   - '/srv/foundryVTT/foundrydata'
+   - '/srv/foundryVTT/foundryvtt'
