@@ -1,0 +1,32 @@
+---
+- name: Create bin-directory
+  file:
+    path: "/home/{{ item.name }}/bin"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0755
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
+- name: Copy backup_foundry.sh
+  copy:
+    src: "backup_foundry.sh"
+    dest: "/home/{{ item.name }}/bin/backup_foundry.sh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0744'
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
+- cron:
+    name: "Create foundryVTT-worlds-backup in cron"
+    minute: "0"
+    hour: "2"
+    user: "{{ foundryVTT_backupuser }}"
+    job: "/home/{{ foundryVTT_backupuser }}/bin/backup_foundry.sh > /dev/null"
+  become: yes
+  when:
+    - foundryVTT_backupuser is defined

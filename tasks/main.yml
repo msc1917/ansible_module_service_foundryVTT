@@ -1,3 +1,6 @@
 ---
 - name: Setup foundryVTT
   include_tasks: setup.yml
+
+- name: Backup-settings for foundryVTT
+  include_tasks: setup-backup.yml
