@@ -4,3 +4,6 @@
 
 - name: Backup-settings for foundryVTT
   include_tasks: setup-backup.yml
+
+- name: PDF-Converter
+  include_tasks: setup-pdfextract.yml

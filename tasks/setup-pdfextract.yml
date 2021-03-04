@@ -1,0 +1,31 @@
+---
+- name: Install poppler-utils
+  apt:
+    name: [ 'poppler-utils' ]
+    state: present
+    update_cache: no
+  become: yes
+
+- name: Create additional /srv/foundry directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "foundry"
+    group: "foundry"
+    mode: 0555
+  become: yes
+  with_items:
+   - '/srv/foundryVTT/foundrydata/Data/local/pdf'
+
+- name: Create document directories /srv/foundry directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "foundry"
+    group: "foundry"
+    mode: 0777
+  become: yes
+  with_items:
+   - '/srv/foundryVTT/foundrydata/Data/local/pdf/convert'
+   - '/srv/foundryVTT/foundrydata/Data/local/pdf/converted'
+   - '/srv/foundryVTT/foundrydata/Data/local/pdf/images'
