@@ -1,7 +1,7 @@
 ---
 - name: Install poppler-utils
   apt:
-    name: [ 'poppler-utils' ]
+    name: [ 'poppler-utils', 'webp' ]
     state: present
     update_cache: no
   become: yes
@@ -29,3 +29,37 @@
    - '/srv/foundryVTT/foundrydata/Data/local/pdf/convert'
    - '/srv/foundryVTT/foundrydata/Data/local/pdf/converted'
    - '/srv/foundryVTT/foundrydata/Data/local/pdf/images'
+
+- name: Create bin-directory
+  file:
+    path: "/home/{{ item.name }}/bin"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0755
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
+- name: Copy convert_pdf.sh
+  copy:
+    src: "convert_pdf.sh"
+    dest: "/home/{{ item.name }}/bin/convert_pdf.sh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0744'
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
+- name: Copy cleanup_pdfextract.sh
+  copy:
+    src: "cleanup_pdfextract.sh"
+    dest: "/home/{{ item.name }}/bin/cleanup_pdfextract.sh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0744'
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
