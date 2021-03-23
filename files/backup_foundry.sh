@@ -6,6 +6,7 @@
 # Sichert veraenderte FoundryVTT-Welten auf das Storage.
 #
 # Version 1.0    2021.02.28    Martin Schatz     First Version
+# Version 1.1    2021.03.20    Martin Schatz     Texte in Ausgabe klarer formuliert
 #
 #
 #
@@ -72,15 +73,16 @@ function check_worlds {
 		then
 			if grep -q "^ *${WORLDDIR}$" ${HOME}/etc/${backup_application}/${excludefile}
 			then
-				${DEBUG} && echo "  ... \"${WORLDDIR}\" gefunden in ${HOME}/etc/${backup_application}" >&2
+				${DEBUG} && echo "  => \"${WORLDDIR}\" gefunden in Exclude-File ${HOME}/etc/${backup_application}/${excludefile}" >&2
 				logfile_add "World ${WORLDDIR} in Exclude-File, will not be included in backup"
 			elif grep -q "^# *${WORLDDIR}$" ${HOME}/etc/${backup_application}/${excludefile}
 			then
 				echo "${WORLDDIR}"
-				${DEBUG} && echo "  ... \"${WORLDDIR}\" gefunden in ${HOME}/etc/${backup_application}" >&2
+				${DEBUG} && echo "  => \"${WORLDDIR}\" auskommentiert gefunden in Exclude-File ${HOME}/etc/${backup_application}/${excludefile}" >&2
 			else
 				echo "# ${WORLDDIR}" >> ${HOME}/etc/${backup_application}/${excludefile}
-				${DEBUG} && echo "  ... \"${WORLDDIR}\" nicht gefunden in ${HOME}/etc/${backup_application}" >&2
+				${DEBUG} && echo "  => \"${WORLDDIR}\" nicht gefunden in ${HOME}/etc/${backup_application}/${excludefile}," >&2
+				${DEBUG} && echo "      wird auskommentiert in den Exclude-File integriert und bei nächster Sicherung gesichert." >&2
 				logfile_add "World ${WORLDDIR} not in Exclude-File, will be added (commented out)"
 			fi
 		fi
@@ -97,28 +99,28 @@ function backup_world {
 	if [ ! -f ${HOME}/data/${backup_application}/${hashfile} ]
 	then
 			touch ${HOME}/data/${backup_application}/${hashfile}
-			${DEBUG} && echo "  ... erstelle ${HOME}/data/${backup_application}/${hashfile}" >&2
+			${DEBUG} && echo "     Erstelle Hash-File ${HOME}/data/${backup_application}/${hashfile}" >&2
 			logfile_add "Create hash-file ${HOME}/data/${backup_application}/${hashfile}"
 		fi
 	if grep -q "^ *${WORLD}:${dir_hash} ${world_directory}/${WORLD}:" ${HOME}/data/${backup_application}/${hashfile}
 	then
 		logfile_add "World ${WORLD} has not changed, skipping backup"
-		${DEBUG} && echo "  Welt \"${WORLD}\" hat sich nicht geaendert, daher kein Backup"		
+		${DEBUG} && echo "     Welt \"${WORLD}\" hat sich nicht geaendert, daher kein Backup"		
 	else
 		for i in ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD} ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir} ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}
 		do
 			if [ ! -d ${i} ]
 			then
 				mkdir ${i}
-				${DEBUG} && echo "  ... erstelle ${i}" >&2
+				${DEBUG} && echo "     Erstelle Verzeichnis ${i}" >&2
 				logfile_add "Create directory ${i}"
 			fi
 		done
 		logfile_add "Starting Backup of world ${WORLD} from ${world_directory}/${WORLD}/ to ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}/"
-		${DEBUG} && echo "  Starte Backup von Welt \"${WORLD}\" (${world_directory}/${WORLD}/ => ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}/)" >&2
+		${DEBUG} && echo "     Starte Backup von Welt \"${WORLD}\" (${world_directory}/${WORLD}/ => [...]/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}/)" >&2
 		cp -r ${world_directory}/${WORLD}/* ${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}/
 		logfile_add "Finished Backup of world ${WORLD}"
-		${DEBUG} && echo "  Beende Backup von Welt \"${WORLD}\""		
+		${DEBUG} && echo "     Beende Backup von Welt \"${WORLD}\""		
 	fi
 
 	echo "${WORLD}:${dir_hash} ${world_directory}/${WORLD}:${backup_storage}/${backup_basedir}/${backup_application}/${WORLD}/${directory_cycle_dir}/${WORLD}.${timestamp_full}" >> ${HOME}/data/${backup_application}/${hashfile}
