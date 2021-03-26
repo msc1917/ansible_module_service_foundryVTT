@@ -19,7 +19,9 @@
 backup_storage=/media/storage/eremitage/system
 backup_basedir=backup
 backup_application=foundryVTT
-world_directory=/srv/foundryVTT/foundrydata/Data/worlds
+foundry_datadir=/srv/foundryVTT/foundrydata/Data
+world_directory=${foundry_datadir}/worlds
+world_directory=${foundry_datadir}/modules
 excludefile=backup_exclude.list
 hashfile=backup_hash.list
 
