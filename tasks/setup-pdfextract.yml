@@ -3,7 +3,8 @@
   apt:
     name: [ 'poppler-utils', 'webp' ]
     state: present
-    update_cache: no
+    update_cache:     "{{ apt_proxy.update_repo | default(no) }}"
+    cache_valid_time: "{{ apt_proxy.update_cache | default(0) }}"
   become: yes
 
 - name: Create additional /srv/foundry directory
