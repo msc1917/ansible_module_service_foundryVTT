@@ -13,6 +13,8 @@
 # Todos:
 #   - Cleanup of hash-file must be created
 #   - Housekeeping for Backups must be created
+#   - Bachup Module integrieren
+#	- Parametrierung in einen Config-File auslagern
 #
 ###
 
