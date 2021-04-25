@@ -21,6 +21,7 @@
     state: present
   become: yes
 
+
 - name: Create /srv/foundry directory
   file:
     path: "{{ item }}"
@@ -30,6 +31,53 @@
     mode: 0755
   become: yes
   with_items:
-   - '/srv/foundryVTT'
-   - '/srv/foundryVTT/foundrydata'
-   - '/srv/foundryVTT/foundryvtt'
+   - "{{ foundryVTT.basedir | default('/srv/foundryVTT')}}"
+   - "{{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.datadir | default('foundrydata')}}"
+   - "{{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.appdir | default('foundryvtt')}}"
+
+- name: Create foundry-user-directories-directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "foundry"
+    group: "foundry"
+    mode: 0755
+  become: yes
+  with_items:
+    - "/home/foundry/lib"
+    - "/home/foundry/lib/foundryVTT"
+
+- name: Create etc-directory
+  file:
+    path: "/home/{{ item.name }}/etc"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0755
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+  when:
+    - item.name in foundryVTT.admin_users
+
+- name: Generate service-file
+  template:
+    src: "foundryvtt.service.j2"
+    dest: "/home/foundry/lib/foundryVTT/foundryvtt.service"
+    owner: "foundry"
+    group: "foundry"
+    mode: '0664'
+  become: yes
+
+- name: Generate config-file
+  template:
+    src: "foundryvtt_config.cfg.j2"
+    dest: "/home/{{ item.name }}/etc/foundryvtt_config.cfg"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0664'
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+  when:
+    - item.name in foundryVTT.admin_users

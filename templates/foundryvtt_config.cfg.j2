@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+# Path to default foundry directories
+foundry_basedir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}
+foundry_datadir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.datadir | default('foundrydata')}}
+foundry_appdir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.appdir | default('foundryvtt')}}
+backup_storage=/media/storage/eremitage/system
+
+# Path to default work-directories
+world_directory=${foundry_datadir}/worlds
+module_directory=${foundry_datadir}/modules
+
+backup_basedir=backup
+backup_application=foundryVTT
+
+excludefile=backup_exclude.list
+hashfile=backup_hash.list

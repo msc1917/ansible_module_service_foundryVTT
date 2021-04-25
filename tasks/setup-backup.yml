@@ -25,8 +25,8 @@
     name: "Create foundryVTT-worlds-backup in cron"
     minute: "0"
     hour: "2"
-    user: "{{ foundryVTT_backupuser }}"
-    job: "/home/{{ foundryVTT_backupuser }}/bin/backup_foundry.sh > /dev/null"
+    user: "{{ foundryVTT.backupuser }}"
+    job: "/home/{{ foundryVTT.backupuser }}/bin/backup_foundry.sh > /dev/null"
   become: yes
   when:
     - foundryVTT_backupuser is defined

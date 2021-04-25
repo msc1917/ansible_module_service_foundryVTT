@@ -3,7 +3,7 @@ Description=Foundry VTT
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/node /srv/foundryVTT/foundryvtt/resources/app/main.js --dataPath=/srv/foundryVTT/foundrydata
+ExecStart=/usr/bin/node {{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.appdir | default('foundryvtt')}}/resources/app/main.js --dataPath={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.datadir | default('foundrydata')}}
 WorkingDirectory=/home/foundry
 StandardOutput=inherit
 StandardError=inherit
