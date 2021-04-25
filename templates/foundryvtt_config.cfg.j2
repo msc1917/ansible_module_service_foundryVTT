@@ -4,7 +4,8 @@
 foundry_basedir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}
 foundry_datadir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.datadir | default('foundrydata')}}
 foundry_appdir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.appdir | default('foundryvtt')}}
-backup_storage=/media/storage/eremitage/system
+foundry_pdfdir={{ foundryVTT.basedir | default('/srv/foundryVTT')}}/{{ foundryVTT.datadir | default('foundrydata')}}/Data/local/pdf
+backup_storage={{ foundryVTT.backupdir }}
 
 # Path to default work-directories
 world_directory=${foundry_datadir}/worlds
@@ -15,3 +16,5 @@ backup_application=foundryVTT
 
 excludefile=backup_exclude.list
 hashfile=backup_hash.list
+
+foundryuser=foundry

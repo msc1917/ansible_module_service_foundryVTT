@@ -7,6 +7,7 @@
 #
 # Version 1.0    2021.02.28    Martin Schatz     First Version
 # Version 1.1    2021.03.20    Martin Schatz     Texte in Ausgabe klarer formuliert
+# Version 1.2    2021.04.25    Martin Schatz     Konfigurationsparameter in eigenen File ausgegliedert
 #
 #
 #
@@ -18,12 +19,8 @@
 #
 ###
 
-backup_storage=/media/storage/eremitage/system
-backup_basedir=backup
-backup_application=foundryVTT
-foundry_datadir=/srv/foundryVTT/foundrydata/Data
-world_directory=${foundry_datadir}/worlds
-world_directory=${foundry_datadir}/modules
+. ~/etc/foundryvtt_config.cfg
+
 excludefile=backup_exclude.list
 hashfile=backup_hash.list
 

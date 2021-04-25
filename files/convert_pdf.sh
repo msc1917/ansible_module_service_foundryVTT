@@ -8,13 +8,14 @@
 #
 # Version 1.0    2021.03.02    Martin Schatz     First Version
 # Version 1.1    2021.03.04    Martin Schatz     Konvertiert in das WebP-Format
+# Version 1.2    2021.04.25    Martin Schatz     Konfigurationsparameter in eigenen File ausgegliedert
 #
 ###
 
-basedir=/srv/foundryVTT/foundrydata/Data/local/pdf
-basedir_doc_in=${basedir}/convert
-basedir_doc_out=${basedir}/converted
-imagedir=${basedir}/images
+. ~/etc/foundryvtt_config.cfg
+basedir_doc_in=${foundry_pdfdir}/convert
+basedir_doc_out=${foundry_pdfdir}/converted
+foundry_imagedir=${foundry_pdfdir}/images
 
 echo "Bearbeite Verzeichnis ${basedir_doc_in}"
 
@@ -22,9 +23,9 @@ ls ${basedir_doc_in} | grep "\.[Pp][Dd][Ff]$" | while read FILE;
 do
 	IMAGEDIR="$(echo "${FILE}" | sed "s/\.[Pp][Dd][Ff]$//")"
 	echo "  -> Bearbeite Dokument: \"${FILE}\""
-	mkdir "${imagedir}/${IMAGEDIR}"
-	pdfimages -j "${basedir_doc_in}/${FILE}" "${imagedir}/${IMAGEDIR}/image" 2> /dev/null
-	find "${imagedir}/${IMAGEDIR}" -type f | while read IMAGEFILE
+	mkdir "${foundry_imagedir}/${IMAGEDIR}"
+	pdfimages -j "${basedir_doc_in}/${FILE}" "${foundry_imagedir}/${IMAGEDIR}/image" 2> /dev/null
+	find "${foundry_imagedir}/${IMAGEDIR}" -type f | while read IMAGEFILE
 	do
 		echo "     ... Bearbeite File: \"${IMAGEFILE}\""
 		filename="$(basename "${IMAGEFILE}")"
@@ -40,7 +41,7 @@ do
 	done
 
 	mv "${basedir_doc_in}/${FILE}" "${basedir_doc_out}/${FILE}"
-	sudo chown foundry:foundry "${imagedir}/${IMAGEDIR}"
-	sudo chown foundry:foundry "${imagedir}/${IMAGEDIR}/"*
+	sudo chown foundry:foundry "${foundry_imagedir}/${IMAGEDIR}"
+	sudo chown foundry:foundry "${foundry_imagedir}/${IMAGEDIR}/"*
 	sudo chown foundry:foundry "${basedir_doc_out}/${FILE}"
 done
