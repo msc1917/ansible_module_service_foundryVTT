@@ -3,3 +3,5 @@ dependencies:
   - role: setenv_apt-proxy
   - role: service_nodejs
   - role: service_samba
+  - role: service_imagetools
+  - role: setenv_admin-scripts

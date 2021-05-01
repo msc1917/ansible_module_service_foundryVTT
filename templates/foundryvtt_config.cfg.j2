@@ -11,6 +11,15 @@ backup_storage={{ foundryVTT.backupdir }}
 world_directory=${foundry_datadir}/worlds
 module_directory=${foundry_datadir}/modules
 
+# Path do Asset-Directories
+token_sourceDir=${foundry_datadir}/Data/{{ foundryVTT.token_sourceDir | default('import/token') }}
+token_targetDir=${foundry_datadir}/Data/{{ foundryVTT.token_targetDir | default('asset/token') }}
+map_sourceDir=${foundry_datadir}/Data/{{ foundryVTT.map_sourceDir | default('import/maps') }}
+map_targetDir=${foundry_datadir}/Data/{{ foundryVTT.map_targetDir | default('asset/maps') }}
+visuals_sourceDir=${foundry_datadir}/Data/{{ foundryVTT.visuals_sourceDir | default('import/visuals') }}
+visuals_targetDir=${foundry_datadir}/Data/{{ foundryVTT.visuals_targetDir | default('asset/visuals') }}
+token_dirtree="{{ foundryVTT.token_dirtree }}"
+
 backup_basedir=backup
 backup_application=foundryVTT
 

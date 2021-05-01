@@ -7,3 +7,6 @@
 
 - name: PDF-Converter
   include_tasks: setup-pdfextract.yml
+
+- name: Maintainance scripts
+  include_tasks: setup-scripts.yml

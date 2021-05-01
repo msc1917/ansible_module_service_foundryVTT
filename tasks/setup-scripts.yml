@@ -1,0 +1,22 @@
+---
+- name: Create bin-directory
+  file:
+    path: "/home/{{ item.name }}/bin"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0755
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
+
+- name: Copy import_foundry_assets.sh
+  copy:
+    src: "import_foundry_assets.sh"
+    dest: "/home/{{ item.name }}/bin/import_foundry_assets.sh"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: '0744'
+  become: yes
+  with_items:
+    - "{{ admin_users }}"
