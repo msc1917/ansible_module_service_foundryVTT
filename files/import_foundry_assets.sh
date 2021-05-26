@@ -120,14 +120,34 @@ function build_dirtree {
     done
 }
 
-echo "Importiere Token-Verzeichnisse (\"${token_sourceDir}\")"
+function delete_wrong_files {
+    find "${1}" -type f | grep -Evi "\.(png|jpeg|jpg|tiff|bmp|webp)$" | while read fileName
+    do
+        if [ -f "${fileName}" ]
+        then
+            sudo -u ${foundryuser} rm "${fileName}"
+            echo " => Loesche Datei \"${fileName}\""
+        fi
+    done
+}
+
+echo "Importiere Token-Verzeichnisse (\"${token_sourceDir}\"):"
 migrateFiles "${token_sourceDir}" "${token_targetDir}"
 echo ""
-echo "Erstelle Token-Verzeichnisbaum (\"${token_sourceDir}\")"
+echo "Erstelle Token-Verzeichnisbaum (\"${token_sourceDir}\"):"
 build_dirtree ${token_dirtree}
 echo ""
-echo "Importiere Map-Verzeichnisse (\"${map_sourceDir}\")"
+echo "Loesche falsche Dateien im Token-Verzeichnis (\"${token_sourceDir}\"):"
+delete_wrong_files "${token_sourceDir}"
+echo ""
+echo "Importiere Map-Verzeichnisse (\"${map_sourceDir}\"):"
 migrateFiles "${map_sourceDir}" "${map_targetDir}"
 echo ""
-echo "Importiere Visuals-Verzeichnisse (\"${visuals_sourceDir}\")"
+echo "Loesche falsche Dateien im Map-Verzeichnisse (\"${map_sourceDir}\"):"
+delete_wrong_files "${map_sourceDir}"
+echo ""
+echo "Importiere Visuals-Verzeichnisse (\"${visuals_sourceDir}\"):"
 migrateFiles "${visuals_sourceDir}" "${visuals_targetDir}"
+echo ""
+echo "Loesche falsche Dateien im Visuals-Verzeichnisse (\"${visuals_sourceDir}\"):"
+delete_wrong_files "${visuals_sourceDir}"
